@@ -1,0 +1,11 @@
+<div class="recipe-card">
+    <h2>{{ recipe.name }}</h2>
+    <p>By {{ recipe.owner.name }}</p>
+    <ul>
+        {% for ingredient in recipe.ingredients %}
+            <li>{{ ingredient }}</li>
+        {% endfor %}
+    </ul>
+    <p>{{ recipe.description }}</p>
+    <button>Add to weekly</button>
+</div>

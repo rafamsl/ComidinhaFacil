@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+   {% block body %}
+       <section class="recipes">
+           {% for recipe in recipes %}
+               {% include 'recipe-card.html.twig' with {'recipe': recipe} %}
+           {% endfor %}
+       </section>
+   {% endblock %}

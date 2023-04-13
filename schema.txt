@@ -1,0 +1,54 @@
+SCHEMA
+
+Table recipes {
+  id integer [primary key]
+  name varchar
+  description varchar
+  owner user_id
+  recipeIngredients recipe_ingredients_id
+}
+
+Table users {
+  id integer [primary key]
+  email varchar
+  password varchar
+}
+
+Table ingredients {
+  id integer [primary key]
+  name varchar
+  unit varchar
+  unity varchar
+}
+
+Table recipe_ingredients{
+  id integer [primary key]
+  recipe recipe_id
+  ingredient ingredient_id
+  amount integer
+}
+
+Table weekly_recipes{
+  id integer [primary key]
+  owner user_id
+  recipe recipe_id
+  week date
+}
+
+Table weekly_ingredients{
+  id integer [primary key]
+  weekly_recipe weekly_recipe_id
+  owner user_id
+  recipe_ingredient recipe_ingredients_id
+}
+
+
+Ref: recipes.owner > users.id // many-to-one
+Ref: recipe_ingredients.recipe > recipes.id
+Ref: recipe_ingredients.ingredient > ingredients.id
+Ref: weekly_recipes.owner > users.id
+Ref: weekly_recipes.recipe > recipes.id
+Ref: weekly_ingredients.owner > users.id
+Ref: weekly_ingredients.weekly_recipe > weekly_recipes.id
+Ref: weekly_ingredients.recipe_ingredient > recipe_ingredients.id
+
