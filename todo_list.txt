@@ -10,3 +10,4 @@ TICKETS to do
 - Add user auth
 - Protect recipes to be only view and managed by owners
 - Avoid creating duplicate recipes
+- Create parser
