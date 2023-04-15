@@ -53,7 +53,7 @@ class RecipeIngredient
         return $this;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
