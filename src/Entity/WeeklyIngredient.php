@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\WeeklyIngredientsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WeeklyIngredientsRepository::class)]
+#[ApiResource]
 class WeeklyIngredient
 {
     #[ORM\Id]

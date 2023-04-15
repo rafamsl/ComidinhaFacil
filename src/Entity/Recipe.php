@@ -2,30 +2,55 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
+#[ApiResource(
+    operations:[
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Delete()
+    ],
+    normalizationContext:[
+        'groups' => ['read']
+    ],
+    denormalizationContext: [
+        'groups' => ['write']
+    ]
+)]
 class Recipe
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read'])]
     public ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read', 'write'])]
     public ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class, orphanRemoval: true)]
+    #[Groups(['write'])]
     public Collection $recipeIngredients;
 
     #[ORM\Column(length: 3000, nullable: true)]
+    #[Groups(['read','write'])]
     public ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'recipes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read'])]
     public ?User $owner = null;
 
     public function __construct()
@@ -50,6 +75,7 @@ class Recipe
         return $this;
     }
 
+    #[Groups(['read'])]
     public function getRecipeIngredientsDTO():  ArrayCollection
     {
         $recipeIngredientDTO = new ArrayCollection([]);
