@@ -2,16 +2,22 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 #[ApiResource(
@@ -26,8 +32,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     denormalizationContext: [
         'groups' => ['write']
-    ]
+    ],
+    paginationClientItemsPerPage: true
 )]
+#[ApiFilter(SearchFilter::class, properties: ['owner.id'=>'exact', 'description' => 'partial', 'name' => 'partial'])]
+#[ApiFilter(PropertyFilter::class)]
 class Recipe
 {
     #[ORM\Id]
@@ -51,6 +60,7 @@ class Recipe
     #[ORM\ManyToOne(inversedBy: 'recipes')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['read'])]
+    #[Assert\NotBlank]
     public ?User $owner = null;
 
     public function __construct()
@@ -76,6 +86,7 @@ class Recipe
     }
 
     #[Groups(['read'])]
+    #[SerializedName("ingredients")]
     public function getRecipeIngredientsDTO():  ArrayCollection
     {
         $recipeIngredientDTO = new ArrayCollection([]);
