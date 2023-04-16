@@ -3,11 +3,30 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\WeeklyRecipeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: WeeklyRecipeRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations:[
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Delete()
+    ],
+    normalizationContext:[
+        'groups' => ['weeklyRecipe:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['weeklyRecipe:write']
+    ],
+    paginationClientItemsPerPage: true
+)]
 class WeeklyRecipe
 {
     #[ORM\Id]
@@ -21,6 +40,7 @@ class WeeklyRecipe
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['user:read'])]
     private ?Recipe $recipe = null;
 
     public function getId(): ?int
@@ -50,5 +70,10 @@ class WeeklyRecipe
         $this->recipe = $recipe;
 
         return $this;
+    }
+
+    #[Groups(['read'])]
+    public function getRecipeName(): string{
+        return $this->getRecipe()->getName();
     }
 }

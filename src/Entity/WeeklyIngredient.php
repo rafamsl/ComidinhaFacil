@@ -3,11 +3,30 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\WeeklyIngredientsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: WeeklyIngredientsRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations:[
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Delete()
+    ],
+    normalizationContext:[
+        'groups' => ['weeklyIngredient:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['weeklyIngredient:write']
+    ],
+    paginationClientItemsPerPage: true
+)]
 class WeeklyIngredient
 {
     #[ORM\Id]
@@ -15,19 +34,21 @@ class WeeklyIngredient
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(fetch: "EAGER")]
+    #[ORM\ManyToOne()]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['weeklyIngredient:read', 'user:read'])]
     public ?Ingredient $ingredient = null;
 
-    #[ORM\ManyToOne(fetch: "EAGER")]
+    #[ORM\ManyToOne()]
     #[ORM\JoinColumn(nullable: false)]
     public ?Recipe $recipe = null;
 
-    #[ORM\ManyToOne(fetch: 'LAZY', inversedBy: 'weeklyIngredients')]
+    #[ORM\ManyToOne(inversedBy: 'weeklyIngredients')]
     #[ORM\JoinColumn(nullable: false)]
     public ?User $owner = null;
 
     #[ORM\Column]
+    #[Groups(['weeklyIngredient:read', 'user:read'])]
     public ?float $amount = null;
 
     public function getId(): ?int
@@ -81,6 +102,11 @@ class WeeklyIngredient
         $this->amount = $amount;
 
         return $this;
+    }
+
+    #[Groups(['read'])]
+    public function getIngredientName(): string{
+        return $this->ingredient->getName();
     }
 
 }

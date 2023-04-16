@@ -28,10 +28,10 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete()
     ],
     normalizationContext:[
-        'groups' => ['read']
+        'groups' => ['recipe:read']
     ],
     denormalizationContext: [
-        'groups' => ['write']
+        'groups' => ['recipe:write']
     ],
     paginationClientItemsPerPage: true
 )]
@@ -42,24 +42,24 @@ class Recipe
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read'])]
+    #[Groups(['recipe:read', 'user:read'])]
     public ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read', 'write'])]
+    #[Groups(['recipe:read', 'recipe:write', 'user:read'])]
     public ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class, orphanRemoval: true)]
-    #[Groups(['write'])]
+    #[Groups(['recipe:write', 'recipe:read'])]
     public Collection $recipeIngredients;
 
     #[ORM\Column(length: 3000, nullable: true)]
-    #[Groups(['read','write'])]
+    #[Groups(['recipe:read','recipe:write'])]
     public ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'recipes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['read'])]
+    #[Groups(['recipe:read'])]
     #[Assert\NotBlank]
     public ?User $owner = null;
 
@@ -85,8 +85,6 @@ class Recipe
         return $this;
     }
 
-    #[Groups(['read'])]
-    #[SerializedName("ingredients")]
     public function getRecipeIngredientsDTO():  ArrayCollection
     {
         $recipeIngredientDTO = new ArrayCollection([]);

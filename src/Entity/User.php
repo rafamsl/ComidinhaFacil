@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\DTO\WeeklyIngredientDTO;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,18 +14,35 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[ApiResource]
+#[ApiResource(
+    operations:[
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Delete()
+    ],
+    normalizationContext:[
+        'groups' => ['user:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['user:write']
+    ],
+    paginationClientItemsPerPage: true
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read', 'recipe:read'])]
     public ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Groups(['user:read','recipe:read'])]
     public ?string $email = null;
 
     #[ORM\Column]
@@ -36,10 +57,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $plainPassword;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Recipe::class, orphanRemoval: true)]
+    #[Groups(['user:read'])]
     public Collection $recipes;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: WeeklyIngredient::class, fetch:"EAGER", orphanRemoval: true)]
+    #[Groups(['user:read'])]
     public Collection $weeklyIngredients;
+
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: WeeklyRecipe::class, fetch:"EAGER", orphanRemoval: true)]
+    #[Groups(['user:read'])]
+    public Collection $weeklyRecipes;
 
     /**
      * @return mixed
