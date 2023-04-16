@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations:[
         new Get(),
         new GetCollection(),
-        new Post(),
         new Delete()
     ],
     normalizationContext:[
