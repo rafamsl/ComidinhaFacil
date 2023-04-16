@@ -30,13 +30,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     paginationClientItemsPerPage: true
 )]
-#[ApiFilter(SearchFilter::class, properties: ['owner.id'=>'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['owner.id'=>'exact', 'id' => 'exact'])]
 #[ApiFilter(PropertyFilter::class)]
 class WeeklyIngredient
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['weeklyIngredient:read', 'user:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne()]

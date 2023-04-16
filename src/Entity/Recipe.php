@@ -41,11 +41,11 @@ class Recipe
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['recipe:read', 'user:read'])]
+    #[Groups(['recipe:read', 'user:read', 'weeklyRecipe:read'])]
     public ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['recipe:read', 'recipe:write', 'user:read'])]
+    #[Groups(['recipe:read', 'recipe:write', 'user:read', 'weeklyRecipe:read'])]
     public ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class, orphanRemoval: true)]

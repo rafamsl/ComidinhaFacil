@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\WeeklyRecipeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -27,20 +30,24 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     paginationClientItemsPerPage: true
 )]
+#[ApiFilter(SearchFilter::class, properties: ['owner.id'=>'exact','id' => 'exact'])]
+#[ApiFilter(PropertyFilter::class)]
 class WeeklyRecipe
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['weeklyRecipe:read', 'user:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['user:read' , 'weeklyRecipe:read'])]
     private ?User $owner = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'weeklyRecipe:read'])]
     private ?Recipe $recipe = null;
 
     public function getId(): ?int
