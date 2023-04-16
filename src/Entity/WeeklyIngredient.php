@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\WeeklyIngredientsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -27,6 +30,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     paginationClientItemsPerPage: true
 )]
+#[ApiFilter(SearchFilter::class, properties: ['owner.id'=>'exact'])]
+#[ApiFilter(PropertyFilter::class)]
 class WeeklyIngredient
 {
     #[ORM\Id]
@@ -45,6 +50,7 @@ class WeeklyIngredient
 
     #[ORM\ManyToOne(inversedBy: 'weeklyIngredients')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['weeklyIngredient:read'])]
     public ?User $owner = null;
 
     #[ORM\Column]
