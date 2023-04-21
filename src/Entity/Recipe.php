@@ -5,10 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,8 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations:[
         new Get(),
-        new GetCollection(),
-        new Delete()
+        new GetCollection()
     ],
     normalizationContext:[
         'groups' => ['recipe:read']
@@ -33,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     paginationClientItemsPerPage: true
 )]
-#[ApiFilter(SearchFilter::class, properties: ['owner.id'=>'exact', 'description' => 'partial', 'name' => 'partial'])]
+#[ApiFilter(SearchFilter::class, properties: ['owner.id'=>'exact','owner.email'=>'exact', 'description' => 'partial', 'name' => 'partial'])]
 #[ApiFilter(PropertyFilter::class)]
 class Recipe
 {

@@ -18,8 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations:[
         new Get(),
-        new GetCollection(),
-        new Delete()
+        new GetCollection()
     ],
     normalizationContext:[
         'groups' => ['weeklyIngredient:read']
@@ -29,7 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     paginationClientItemsPerPage: true
 )]
-#[ApiFilter(SearchFilter::class, properties: ['owner.id'=>'exact', 'id' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['owner.id'=>'exact','owner.email'=>'exact', 'id' => 'exact'])]
 #[ApiFilter(PropertyFilter::class)]
 class WeeklyIngredient
 {

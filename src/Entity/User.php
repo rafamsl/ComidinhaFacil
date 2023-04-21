@@ -24,8 +24,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations:[
         new Get(),
-        new GetCollection(),
-        new Delete()
+        new GetCollection()
     ],
     normalizationContext:[
         'groups' => ['user:read']
