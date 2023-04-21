@@ -17,12 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RecipeController extends AbstractController
 {
-    #[Route('/api/recipes', name:'api_recipes')]
-    public function allRecipes(RecipeRepository $recipeRepository){
-        $recipes = $recipeRepository->findAllResponse();
-        return new Response(json_encode($recipes->getValues(), JSON_PRETTY_PRINT));
-    }
-
     #[Route('/api/new_recipe', name:'api_new_recipe', methods: ['POST'])]
     public function newRecipe(Request $request, RecipeRepository $recipeRepository, IngredientRepository $ingredientRepository, RecipeIngredientRepository $recipeIngredientRepository){
         $recipeContent = json_decode($request->getContent(),true);
@@ -75,6 +69,5 @@ class RecipeController extends AbstractController
             return new Response('There was an error: '.$exception);
         }
         return new Response('Recipe deleted');
-
     }
 }

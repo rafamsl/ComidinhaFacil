@@ -6,7 +6,7 @@ TICKETS to do
 - Allow users to delete recipes, which removes it from weekly list and remove all their ingredients (DONE)
 - Group ingredients on weekly ingredients (DONE)
 - BUG: Garlic = 0 (DONE)
-- Allow user to remove ingredients (In progress)
+- Allow user to remove ingredients (DONE)
 - Add user auth
 - Protect recipes to be only view and managed by owners
 - Avoid creating duplicate recipes

@@ -2,10 +2,25 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use App\Repository\RecipeIngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RecipeIngredientRepository::class)]
+#[ApiResource(
+    operations:[
+        new Get()
+    ],
+    normalizationContext:[
+        'groups' => ['recipeIngredient:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['recipeIngredient:write']
+    ],
+    paginationClientItemsPerPage: true
+)]
 class RecipeIngredient
 {
     #[ORM\Id]
@@ -19,9 +34,11 @@ class RecipeIngredient
 
     #[ORM\ManyToOne(inversedBy: 'recipeIngredients')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['recipe:read', 'user:read'])]
     public ?Ingredient $ingredient = null;
 
     #[ORM\Column]
+    #[Groups(['recipe:read', 'user:read'])]
     public ?float $amount = null;
 
     public function getId(): ?int

@@ -2,6 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\DTO\WeeklyIngredientDTO;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,17 +17,35 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[ApiResource(
+    operations:[
+        new Get(),
+        new GetCollection()
+    ],
+    normalizationContext:[
+        'groups' => ['user:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['user:write']
+    ],
+    paginationClientItemsPerPage: true
+)]
+#[ApiFilter(SearchFilter::class, properties: ['id'=>'exact', 'email' => 'partial'])]
+#[ApiFilter(PropertyFilter::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read', 'recipe:read','weeklyIngredient:read', 'weeklyRecipe:read'])]
     public ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Groups(['user:read','recipe:read','weeklyIngredient:read', 'weeklyRecipe:read'])]
     public ?string $email = null;
 
     #[ORM\Column]
@@ -34,10 +60,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $plainPassword;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Recipe::class, orphanRemoval: true)]
+    #[Groups(['user:read'])]
     public Collection $recipes;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: WeeklyIngredient::class, fetch:"EAGER", orphanRemoval: true)]
+    #[Groups(['user:read'])]
     public Collection $weeklyIngredients;
+
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: WeeklyRecipe::class, fetch:"EAGER", orphanRemoval: true)]
+    #[Groups(['user:read'])]
+    public Collection $weeklyRecipes;
 
     /**
      * @return mixed

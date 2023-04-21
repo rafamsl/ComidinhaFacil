@@ -12,12 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class WeeklyRecipeController extends AbstractController
 {
-    #[Route('/api/weekly_recipes', name:'api_weekly_recipes', methods: ['GET'])]
-    public function allWeeklyRecipes(WeeklyRecipeRepository $weeklyRecipeRepository){
-        $weeklyRecipes = $weeklyRecipeRepository->findAllResponse();
-        return new Response(json_encode($weeklyRecipes->getValues(), JSON_PRETTY_PRINT));
-    }
-
     #[Route('/api/add_weekly_recipe/{recipeId}', name:'api_add_weekly_recipes', methods: ['POST'])]
     public function addWeeklyRecipe(int $recipeId, RecipeRepository $recipeRepository,WeeklyRecipeRepository $weeklyRecipeRepository){
         $recipe = $recipeRepository->find($recipeId);

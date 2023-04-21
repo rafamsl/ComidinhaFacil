@@ -2,30 +2,58 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\WeeklyIngredientsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: WeeklyIngredientsRepository::class)]
+#[ApiResource(
+    operations:[
+        new Get(),
+        new GetCollection()
+    ],
+    normalizationContext:[
+        'groups' => ['weeklyIngredient:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['weeklyIngredient:write']
+    ],
+    paginationClientItemsPerPage: true
+)]
+#[ApiFilter(SearchFilter::class, properties: ['owner.id'=>'exact','owner.email'=>'exact', 'id' => 'exact'])]
+#[ApiFilter(PropertyFilter::class)]
 class WeeklyIngredient
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['weeklyIngredient:read', 'user:read'])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(fetch: "EAGER")]
+    #[ORM\ManyToOne()]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['weeklyIngredient:read', 'user:read'])]
     public ?Ingredient $ingredient = null;
 
-    #[ORM\ManyToOne(fetch: "EAGER")]
+    #[ORM\ManyToOne()]
     #[ORM\JoinColumn(nullable: false)]
     public ?Recipe $recipe = null;
 
-    #[ORM\ManyToOne(fetch: 'LAZY', inversedBy: 'weeklyIngredients')]
+    #[ORM\ManyToOne(inversedBy: 'weeklyIngredients')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['weeklyIngredient:read'])]
     public ?User $owner = null;
 
     #[ORM\Column]
+    #[Groups(['weeklyIngredient:read', 'user:read'])]
     public ?float $amount = null;
 
     public function getId(): ?int
@@ -79,6 +107,11 @@ class WeeklyIngredient
         $this->amount = $amount;
 
         return $this;
+    }
+
+    #[Groups(['read'])]
+    public function getIngredientName(): string{
+        return $this->ingredient->getName();
     }
 
 }

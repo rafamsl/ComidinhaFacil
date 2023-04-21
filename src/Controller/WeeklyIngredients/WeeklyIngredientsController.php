@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class WeeklyIngredientsController extends AbstractController
 {
 
-    #[Route('/api/weekly_ingredients', name:'api_weekly_ingredients', methods: ['GET'])]
+    #[Route('/api/weekly_ingredients_sum', name:'api_weekly_ingredients_sum(answer', methods: ['GET'])]
     public function allWeeklyIngredients(Request $request, UserRepository $userRepository): Response
     {
         $userId = $request->query->get('userId');

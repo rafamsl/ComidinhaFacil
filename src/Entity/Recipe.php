@@ -2,30 +2,60 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
+#[ApiResource(
+    operations:[
+        new Get(),
+        new GetCollection()
+    ],
+    normalizationContext:[
+        'groups' => ['recipe:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['recipe:write']
+    ],
+    paginationClientItemsPerPage: true
+)]
+#[ApiFilter(SearchFilter::class, properties: ['owner.id'=>'exact','owner.email'=>'exact', 'description' => 'partial', 'name' => 'partial'])]
+#[ApiFilter(PropertyFilter::class)]
 class Recipe
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['recipe:read', 'user:read', 'weeklyRecipe:read'])]
     public ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['recipe:read', 'recipe:write', 'user:read', 'weeklyRecipe:read'])]
     public ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class, orphanRemoval: true)]
+    #[Groups(['recipe:write', 'recipe:read'])]
     public Collection $recipeIngredients;
 
     #[ORM\Column(length: 3000, nullable: true)]
+    #[Groups(['recipe:read','recipe:write'])]
     public ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'recipes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['recipe:read'])]
+    #[Assert\NotBlank]
     public ?User $owner = null;
 
     public function __construct()
