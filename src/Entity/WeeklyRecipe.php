@@ -39,7 +39,7 @@ class WeeklyRecipe
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['user:read' , 'weeklyRecipe:read'])]
+    #[Groups(['weeklyRecipe:read'])]
     private ?User $owner = null;
 
     #[ORM\ManyToOne]
