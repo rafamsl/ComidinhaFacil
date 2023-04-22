@@ -8,7 +8,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\DTO\WeeklyIngredientDTO;
 use App\Repository\UserRepository;
@@ -24,7 +24,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations:[
         new Get(),
-        new GetCollection()
+        new GetCollection(),
+        new Delete(),
+        new Put()
     ],
     normalizationContext:[
         'groups' => ['user:read']
@@ -38,6 +40,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiFilter(PropertyFilter::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

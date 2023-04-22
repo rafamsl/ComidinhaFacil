@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class WeeklyRecipeController extends AbstractController
 {
-    #[Route('/api/add_weekly_recipe/{recipeId}', name:'api_add_weekly_recipes', methods: ['POST'])]
+    #[Route('/api/weekly_recipes/add/{recipeId}', name:'api_add_weekly_recipes', methods: ['POST'])]
     public function addWeeklyRecipe(int $recipeId, RecipeRepository $recipeRepository,WeeklyRecipeRepository $weeklyRecipeRepository){
         $recipe = $recipeRepository->find($recipeId);
 
@@ -31,7 +31,7 @@ class WeeklyRecipeController extends AbstractController
         return new Response('Recipe was added');
     }
 
-    #[Route('/api/remove_weekly_recipe/{recipeId}', name:'api_remove_weekly_recipes', methods: ['DELETE'])]
+    #[Route('/api/weekly_recipes/{recipeId}', name:'api_remove_weekly_recipes', methods: ['DELETE'])]
     public function removeWeeklyRecipe(int $recipeId, WeeklyRecipeRepository $weeklyRecipeRepository, RecipeRepository $recipeRepository){
         $recipe = $recipeRepository->find($recipeId);
 

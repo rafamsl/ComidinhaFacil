@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ApiToken;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,13 +22,15 @@ class ApiTokenRepository extends ServiceEntityRepository
         parent::__construct($registry, ApiToken::class);
     }
 
-    public function save(ApiToken $entity, bool $flush = false): void
+    public function save(ApiToken $entity, bool $flush = false): ApiToken
     {
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
+        return $entity;
     }
 
     public function remove(ApiToken $entity, bool $flush = false): void

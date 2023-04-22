@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RecipeController extends AbstractController
 {
-    #[Route('/api/new_recipe', name:'api_new_recipe', methods: ['POST'])]
+    #[Route('/api/recipes', name:'api_new_recipe', methods: ['POST'])]
     public function newRecipe(Request $request, RecipeRepository $recipeRepository, IngredientRepository $ingredientRepository, RecipeIngredientRepository $recipeIngredientRepository){
         $recipeContent = json_decode($request->getContent(),true);
 
@@ -55,7 +55,7 @@ class RecipeController extends AbstractController
         return new Response(json_encode($responseObject, JSON_PRETTY_PRINT));
     }
 
-    #[Route('/api/delete_recipe/{recipeId}', name:'api_delete_recipe', methods: ['DELETE'])]
+    #[Route('/api/recipes/{recipeId}', name:'api_delete_recipe', methods: ['DELETE'])]
     public function deleteRecipe(int $recipeId, Request $request, RecipeRepository $recipeRepository, IngredientRepository $ingredientRepository, RecipeIngredientRepository $recipeIngredientRepository){
         $recipe = $recipeRepository->find($recipeId);
 

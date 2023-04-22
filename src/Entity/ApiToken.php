@@ -2,12 +2,20 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
 use App\Repository\ApiTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ApiTokenRepository::class)]
 class ApiToken
 {
+    public function __construct(User $user){
+        $this->token = bin2hex(random_bytes(60));
+        $this->owner = $user;
+        $this->expiresAt = new \DateTimeImmutable('+100 days');
+    }
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -33,23 +41,9 @@ class ApiToken
         return $this->token;
     }
 
-    public function setToken(string $token): self
-    {
-        $this->token = $token;
-
-        return $this;
-    }
-
     public function getExpiresAt(): ?\DateTimeImmutable
     {
         return $this->expiresAt;
-    }
-
-    public function setExpiresAt(\DateTimeImmutable $expiresAt): self
-    {
-        $this->expiresAt = $expiresAt;
-
-        return $this;
     }
 
     public function getOwner(): ?User
@@ -57,10 +51,8 @@ class ApiToken
         return $this->owner;
     }
 
-    public function setOwner(?User $owner): self
+    public function isExpired(): bool
     {
-        $this->owner = $owner;
-
-        return $this;
+        return $this->getExpiresAt() <= new \DateTime();
     }
 }
