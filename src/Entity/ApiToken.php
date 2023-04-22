@@ -9,23 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ApiTokenRepository::class)]
-#[ApiResource(
-    operations:[
-        new Post()
-    ],
-    normalizationContext:[
-        'groups' => ['apiToken:read']
-    ],
-    denormalizationContext: [
-    'groups' => ['apiToken:write']
-],
-)]
 class ApiToken
 {
     public function __construct(User $user){
         $this->token = bin2hex(random_bytes(60));
         $this->owner = $user;
-        $this->expiresAt = new \DateTimeImmutable('+1 hour');
+        $this->expiresAt = new \DateTimeImmutable('+100 days');
     }
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -33,11 +22,9 @@ class ApiToken
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['apiToken:read'])]
     private ?string $token = null;
 
     #[ORM\Column]
-    #[Groups(['apiToken:read'])]
     private ?\DateTimeImmutable $expiresAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'apiTokens')]
@@ -62,5 +49,10 @@ class ApiToken
     public function getOwner(): ?User
     {
         return $this->owner;
+    }
+
+    public function isExpired(): bool
+    {
+        return $this->getExpiresAt() <= new \DateTime();
     }
 }

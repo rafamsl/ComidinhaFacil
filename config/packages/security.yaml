@@ -14,6 +14,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            stateless: true
             lazy: true
             provider: app_user_provider
 
@@ -21,6 +22,8 @@ security:
                 check_path: app_get_token
                 username_path: email
                 password_path: password
+
+            custom_authenticator: App\Security\ApiTokenAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -31,7 +34,13 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/api/recipes, roles: ROLE_API }
+        - { path: ^/api/users, roles: ROLE_API }
+        - { path: ^/api/ingredients, roles: ROLE_API }
+        - { path: ^/api/weekly_ingredients, roles: ROLE_API }
+        - { path: ^/api/weekly_recipes, roles: ROLE_API }
+        - { path: ^/api/recipe_ingredients, roles: ROLE_API }
+        - { path: ^/api/sum, roles: ROLE_API }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

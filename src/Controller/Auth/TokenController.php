@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TokenController extends AbstractController
 {
-    #[Route('/api/get_token', name:'app_get_token', methods: ['POST'])]
+    #[Route('/get_token', name:'app_get_token', methods: ['POST'])]
     public function getToken(ApiTokenRepository $apiTokenRepository): object
     {
         $user = $this->getUser();
