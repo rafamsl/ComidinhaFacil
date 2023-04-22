@@ -18,7 +18,7 @@ security:
             provider: app_user_provider
 
             json_login:
-                check_path: app_login
+                check_path: app_get_token
                 username_path: email
                 password_path: password
 
