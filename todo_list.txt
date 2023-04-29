@@ -7,7 +7,7 @@ TICKETS to do
 - Group ingredients on weekly ingredients (DONE)
 - BUG: Garlic = 0 (DONE)
 - Allow user to remove ingredients (DONE)
-- Add user auth
+- Add user auth (DONE)
 - Protect recipes to be only view and managed by owners
 - Avoid creating duplicate recipes
 - Create parser
