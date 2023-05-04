@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Create a New Recipe</h1>
+    {{ form_start(form) }}
+
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+
+    {% for ingredientForm in form.ingredients %}
+        <div class="ingredient-row">
+            {{ form_row(ingredientForm.name) }}
+            {{ form_row(ingredientForm.unit) }}
+            {{ form_row(ingredientForm.amount) }}
+        </div>
+    {% endfor %}
+
+    <button type="button" class="add-ingredient">Add Ingredient</button>
+
+    <br><br>
+    <button type="submit">Create</button>
+    {{ form_end(form) }}
+
+    <script>
+        var ingredientRowTemplate = '{{ form_widget(form.ingredients.vars.prototype)|e('html_attr') }}';
+
+        jQuery(document).ready(function() {
+            jQuery('.add-ingredient').click(function(e) {
+                e.preventDefault();
+                var newRow = jQuery(ingredientRowTemplate.replace(/__name__/g, jQuery('.ingredient-row').length));
+                jQuery('.ingredient-row:last').after(newRow);
+            });
+        });
+    </script>
+
+{% endblock %}

@@ -8,6 +8,8 @@ TICKETS to do
 - BUG: Garlic = 0 (DONE)
 - Allow user to remove ingredients (DONE)
 - Add user auth (DONE)
+- Add tests
+- Add frontend
 - Protect recipes to be only view and managed by owners
 - Avoid creating duplicate recipes
 - Create parser
