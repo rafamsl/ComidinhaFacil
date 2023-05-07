@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ComidinhaFacil.iml" filepath="$PROJECT_DIR$/.idea/ComidinhaFacil.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../mixedVinyls3_doctrine/template/.idea/template.iml" filepath="$PROJECT_DIR$/../mixedVinyls3_doctrine/template/.idea/template.iml" />
     </modules>
   </component>
 </project>

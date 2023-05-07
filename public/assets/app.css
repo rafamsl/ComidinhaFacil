@@ -1,0 +1,118 @@
+/*!**************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[1].use[1]!./assets/styles/app.css ***!
+  \**************************************************************************************************************/
+body {
+    background-color: #f2f2f2;
+    font-family: 'Open Sans', sans-serif;
+    color: #333;
+}
+
+ .page-title {
+     margin-top: 50px;
+ }
+
+.list i {
+    margin-top: 7px;
+}
+
+.list a {
+    color: #fff;
+}
+
+.details {
+    background-color: #222F36;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.list li {
+    margin-right: 5px;
+}
+
+.container {
+    background-color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    color: #333;
+    padding: 20px;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.container:hover {
+    color: #fff;
+}
+
+/* Sticky navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+}
+/* Navbar brand */
+.navbar-brand {
+    font-weight: bold;
+}
+/* Navbar links */
+.nav-link {
+    color: #333;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-right: 10px;
+}
+.nav-link:hover {
+    color: #666;
+}
+/* Active link */
+.nav-item.active .nav-link {
+    color: #000;
+}
+/* Toggler icon */
+.navbar-toggler-icon {
+    background-color: #666;
+}
+/* Toggled menu background */
+.navbar-collapse {
+    background-color: #f2f2f2;
+}
+
+/* Login form */
+.card {
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.card-header {
+    background-color: #f2f2f2;
+    text-align: center;
+}
+.card-body {
+    padding: 30px;
+}
+.form-group label {
+    color: #666;
+    font-weight: bold;
+}
+.form-group input {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+}
+.form-group input:focus, .form-group input:active {
+    border: 1px solid #999;
+}
+.form-check-label {
+    color: #999;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBwLmNzcyIsIm1hcHBpbmdzIjoiOzs7QUFJQTtJQUNJLHlCQUF5QjtJQUN6QixXQUFXO0lBQ1gsMkNBQTJDO0FBQy9DOztBQUVBO0lBQ0ksZUFBZTtBQUNuQjs7QUFFQTtJQUNJLFdBQVc7QUFDZjs7QUFFQTtJQUNJLHlCQUF5QjtJQUN6QixrQkFBa0I7SUFDbEIsWUFBWTtBQUNoQjs7QUFFQTtJQUNJLGlCQUFpQjtBQUNyQjs7QUFFQTtJQUNJLHlCQUF5QjtJQUN6Qiw4RUFBOEU7SUFDOUUsa0JBQWtCO0lBQ2xCLGNBQWM7SUFDZCxXQUFXO0lBQ1gscUJBQXFCO0FBQ3pCO0FBQ0E7SUFDSSxXQUFXO0FBQ2YiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9hc3NldHMvc3R5bGVzL2FwcC5jc3MiXSwic291cmNlc0NvbnRlbnQiOlsiQGltcG9ydCAnfmJvb3RzdHJhcCc7XG5AaW1wb3J0ICd+QGZvcnRhd2Vzb21lL2ZvbnRhd2Vzb21lLWZyZWUvY3NzL2FsbC5jc3MnO1xuQGltcG9ydCAnfkBmb250c291cmNlL3JvYm90by1jb25kZW5zZWQnO1xuXG5ib2R5IHtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjMTcyNDJDO1xuICAgIGNvbG9yOiAjZmZmO1xuICAgIGZvbnQtZmFtaWx5OiAnUm9ib3RvIENvbmRlbnNlZCcsIHNhbnMtc2VyaWY7XG59XG5cbi5zb25nLWxpc3QgaSB7XG4gICAgbWFyZ2luLXRvcDogN3B4O1xufVxuXG4uc29uZy1saXN0IGEge1xuICAgIGNvbG9yOiAjZmZmO1xufVxuXG4uc29uZy1kZXRhaWxzIHtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjMjIyRjM2O1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgICBwYWRkaW5nOiA1cHg7XG59XG5cbi5nZW5yZS1saXN0IGxpIHtcbiAgICBtYXJnaW4tcmlnaHQ6IDVweDtcbn1cblxuLm1peGVkLXZpbnlsLWNvbnRhaW5lciB7XG4gICAgYmFja2dyb3VuZDogcmdiKDIzLDM2LDQ0KTtcbiAgICBiYWNrZ3JvdW5kOiBsaW5lYXItZ3JhZGllbnQoMTgwZGVnLCByZ2JhKDIzLDM2LDQ0LDEpIDElLCByZ2JhKDM0LDQ3LDU0LDEpIDk3JSk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIGRpc3BsYXk6IGJsb2NrO1xuICAgIGNvbG9yOiAjZmZmO1xuICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTtcbn1cbi5taXhlZC12aW55bC1jb250YWluZXI6aG92ZXIge1xuICAgIGNvbG9yOiAjZmZmO1xufVxuIl0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9*/

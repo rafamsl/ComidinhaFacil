@@ -17,13 +17,24 @@ security:
             stateless: true
             lazy: true
             provider: app_user_provider
+            remember_me:
+                always_remember_me: true
+                # Will compare rememberMe cookie with previous password, so if password changes, the cookie is not valid anymore
+                signature_properties: [password]
 
             json_login:
                 check_path: app_get_token
                 username_path: email
                 password_path: password
 
-            custom_authenticator: App\Security\ApiTokenAuthenticator
+            custom_authenticator:
+                - App\Security\ApiTokenAuthenticator
+                - App\Security\LoginFormAuthenticator
+
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                target: app_login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
